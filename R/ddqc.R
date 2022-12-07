@@ -78,18 +78,22 @@
 #'
 #' @param data Seurat object
 #' @param basic.n.genes lower nFeature_RNA filtering. 100 by default
-#' @param basic.percent.mt upper percent.mt filtering. 80 by default
+#' @param basic.percent.mt upper percent.mt filtering. 60 by default
+#' @param basic.percent.rb upper percent.rb filtering. 60 by default
 #' @param mt.prefix gene regular expression used to calculate percent.mt in a cell
 #' "MT-" by default
 #' @param rb.prefix gene regular expression used to calculate percent.rb in a cell
 #' @param basic.percent.mt upper percent.mt filtering. 80 by default
 #' @return Filltered Seurat object
 #' @export
-initialQC <- function(data, basic.n.genes=100, basic.percent.mt=80, mt.prefix="MT-", rb.prefix="^RP[SL][[:digit:]]|^RPLP[[:digit:]]|^RPSA") {
+initialQC <- function(data, basic.n.genes=100, basic.percent.mt=60, basic.percent.rb=60, mt.prefix="MT-", rb.prefix="^RP[SL][[:digit:]]|^RPLP[[:digit:]]|^RPSA") {
   data[["percent.mt"]] <- PercentageFeatureSet(data, features=grep(mt.prefix, rownames(data$RNA), ignore.case=TRUE))
   data[["percent.rb"]] <- PercentageFeatureSet(data, features=grep(rb.prefix, rownames(data$RNA), ignore.case=TRUE))
 
-  data <- subset(data, subset = nFeature_RNA >= basic.n.genes & percent.mt <= basic.percent.mt)
+  data <- subset(data,
+                 subset = nFeature_RNA >= basic.n.genes &
+                 percent.mt <= basic.percent.mt &
+                 percent.rb <= basic.percent.rb)
   return(data)
 }
 
@@ -115,7 +119,7 @@ initialQC <- function(data, basic.n.genes=100, basic.percent.mt=80, mt.prefix="M
 #' @return data.frame with ddqc statistics
 #' @export
 ddqc.metrics <- function(data, n.pcs=50, k.param=20, res=1, threshold=2, do.counts=TRUE, do.genes=TRUE, do.mito=TRUE, do.ribo=FALSE,
-                         n.genes.lower.bound=200, percent.mito.upper.bound=10, random.state=29) {
+                         n.genes.lower.bound=200, percent.mito.upper.bound=10, percent.mito.upper.bound=60, random.state=29) {
   data <- .clusterData(data, res=res, n.pcs=n.pcs, k.param=k.param, random.seed = random.state)
 
   df.qc <- data.frame("cluster_labels"=data$seurat_clusters, row.names=colnames(data))
@@ -137,13 +141,15 @@ ddqc.metrics <- function(data, n.pcs=50, k.param=20, res=1, threshold=2, do.coun
     passed.qc <- passed.qc & df.qc$percent.mt.passed.qc
   }
   if (do.ribo) {
-    df.qc <- .metricFilter(data, df.qc, threshold, "percent.rb", do.upper.co=TRUE)
+    df.qc <- .metricFilter(data, df.qc, threshold, "percent.rb", do.upper.co=TRUE,
+                           upper.bound=percent.ribo.upper.bound)
     passed.qc <- passed.qc & df.qc$percent.rb.passed.qc
   }
   df.qc[["passed.qc"]] <- passed.qc
 
   .ddqcBoxplot(df.qc, "nFeature_RNA", log2(200), TRUE)
   .ddqcBoxplot(df.qc, "percent.mt", 10, FALSE)
+  .ddqcBoxplot(df.qc, "percent.rb", 60, FALSE)
 
   return(df.qc)
 }
