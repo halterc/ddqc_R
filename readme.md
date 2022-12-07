@@ -5,7 +5,7 @@ Adapted from: https://github.com/ayshwaryas/ddqc
   - Plot ribo
   - Default do.ribo = TRUE
   - Option to set ribo cutoff filter, percent.ribo.upper.bound = 60
-- Adjusted initialQC to nGenes = 50, mito = 10, ribo = 60
+- Adjusted initialQC to nGenes = 50, mito = 60, ribo = 60
 
 ## Required R verison >= 4.0.0
 ## Required packages
