@@ -6,8 +6,8 @@
 \usage{
 initialQC(
   data,
-  basic.n.genes = 100,
-  basic.percent.mt = 80,
+  basic.n.genes = 50,
+  basic.percent.mt = 60,
   mt.prefix = "MT-",
   rb.prefix = "^RP[SL][[:digit:]]|^RPLP[[:digit:]]|^RPSA"
 )
@@ -15,9 +15,9 @@ initialQC(
 \arguments{
 \item{data}{Seurat object}
 
-\item{basic.n.genes}{lower nFeature_RNA filtering. 100 by default}
+\item{basic.n.genes}{lower nFeature_RNA filtering. 50 by default}
 
-\item{basic.percent.mt}{upper percent.mt filtering. 80 by default}
+\item{basic.percent.mt}{upper percent.mt filtering. 60 by default}
 
 \item{mt.prefix}{gene regular expression used to calculate percent.mt in a cell
 "MT-" by default}
