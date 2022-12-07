@@ -6,19 +6,23 @@
 \usage{
 ddqc.metrics(
   data,
+  n.pcs = 30,
   res = 1,
   threshold = 3,
   do.counts = TRUE,
   do.genes = TRUE,
   do.mito = TRUE,
-  do.ribo = FALSE,
+  do.ribo = TRUE,
   n.genes.lower.bound = 200,
   percent.mito.upper.bound = 10,
+  percent.ribo.upper.bound = 60
   random.state = 29
 )
 }
 \arguments{
 \item{data}{Seurat object}
+
+\item{n.pcs}{number of principal componets for clustering. 30 by default}
 
 \item{res}{clustering resolution. 1 by default}
 
@@ -35,6 +39,8 @@ ddqc.metrics(
 \item{n.genes.lower.bound}{bound for lower nFeature_RNA cluster-level threshold. 200 by default}
 
 \item{percent.mito.upper.bound}{bound for upper percent.mt cluster-level threshold. 10 by default}
+
+\item{percent.ribo.upper.bound}{bound for upper percent.rb cluster-level threshold. 60 by default}
 
 \item{random.state}{random seed for clustering results reproducibility. 29 by default}
 }
