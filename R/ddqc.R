@@ -1,4 +1,4 @@
-.clusterData <- function(data, norm.factor=10000, n.pcs=50, k.param=20, res=1, random.seed=29) {
+.clusterData <- function(data, norm.factor=10000, n.pcs=30, k.param=20, res=1, random.seed=29) {
   set.seed(random.seed)
   data <- NormalizeData(data, normalization.method = "LogNormalize", scale.factor = norm.factor, verbose=FALSE)
   data <- FindVariableFeatures(data, selection.method = "vst", nfeatures = 2000,  verbose=FALSE)
@@ -11,7 +11,7 @@
 }
 
 
-.metricFilter <- function(data, df.qc, param=2, metric.name, do.upper.co=FALSE, do.lower.co=FALSE,
+.metricFilter <- function(data, df.qc, param=3, metric.name, do.upper.co=FALSE, do.lower.co=FALSE,
                           lower.bound=10E10, upper.bound=-10E10) {
   passed.qc <- vector(mode="logical", length=length(colnames(data)))
   names(passed.qc) <- colnames(data)
@@ -77,16 +77,15 @@
 #' This function takes a Seurat object and does initial QC on it
 #'
 #' @param data Seurat object
-#' @param basic.n.genes lower nFeature_RNA filtering. 100 by default
-#' @param basic.percent.mt upper percent.mt filtering. 60 by default
+#' @param basic.n.genes lower nFeature_RNA filtering. 200 by default
+#' @param basic.percent.mt upper percent.mt filtering. 10 by default
 #' @param basic.percent.rb upper percent.rb filtering. 60 by default
 #' @param mt.prefix gene regular expression used to calculate percent.mt in a cell
 #' "MT-" by default
 #' @param rb.prefix gene regular expression used to calculate percent.rb in a cell
-#' @param basic.percent.mt upper percent.mt filtering. 80 by default
 #' @return Filltered Seurat object
 #' @export
-initialQC <- function(data, basic.n.genes=100, basic.percent.mt=60, basic.percent.rb=60, mt.prefix="MT-", rb.prefix="^RP[SL][[:digit:]]|^RPLP[[:digit:]]|^RPSA") {
+initialQC <- function(data, basic.n.genes=200, basic.percent.mt=10, basic.percent.rb=60, mt.prefix="MT-", rb.prefix="^RP[SL][[:digit:]]|^RPLP[[:digit:]]|^RPSA") {
   data[["percent.mt"]] <- PercentageFeatureSet(data, features=grep(mt.prefix, rownames(data$RNA), ignore.case=TRUE))
   data[["percent.rb"]] <- PercentageFeatureSet(data, features=grep(rb.prefix, rownames(data$RNA), ignore.case=TRUE))
 
@@ -118,8 +117,8 @@ initialQC <- function(data, basic.n.genes=100, basic.percent.mt=60, basic.percen
 #'
 #' @return data.frame with ddqc statistics
 #' @export
-ddqc.metrics <- function(data, n.pcs=50, k.param=20, res=1, threshold=2, do.counts=TRUE, do.genes=TRUE, do.mito=TRUE, do.ribo=FALSE,
-                         n.genes.lower.bound=200, percent.mito.upper.bound=10, percent.mito.upper.bound=60, random.state=29) {
+ddqc.metrics <- function(data, n.pcs=30, k.param=20, res=1, threshold=3, do.counts=TRUE, do.genes=TRUE, do.mito=TRUE, do.ribo=TRUE,
+                         n.genes.lower.bound=200, percent.mito.upper.bound=10, percent.ribo.upper.bound=60, random.state=29) {
   data <- .clusterData(data, res=res, n.pcs=n.pcs, k.param=k.param, random.seed = random.state)
 
   df.qc <- data.frame("cluster_labels"=data$seurat_clusters, row.names=colnames(data))
