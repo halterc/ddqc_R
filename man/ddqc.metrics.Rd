@@ -7,7 +7,7 @@
 ddqc.metrics(
   data,
   res = 1,
-  threshold = 2,
+  threshold = 3,
   do.counts = TRUE,
   do.genes = TRUE,
   do.mito = TRUE,
@@ -22,7 +22,7 @@ ddqc.metrics(
 
 \item{res}{clustering resolution. 1 by default}
 
-\item{threshold}{MAD multiplier for ddqc. 2 by default}
+\item{threshold}{MAD multiplier for ddqc. 3 by default}
 
 \item{do.counts}{whether to consider nCount_RNA for ddqc. TRUE by default}
 
