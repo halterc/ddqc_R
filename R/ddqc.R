@@ -106,7 +106,7 @@ initialQC <- function(data, basic.n.genes=50, basic.percent.mt=60, basic.percent
 #' @param n.pcs number of principal componets for clustering. 50 by default
 #' @param k.param k for FindNeighbors. 20 by default
 #' @param res clustering resolution. 1 by default
-#' @param threshold MAD multiplier for ddqc. 2 by default
+#' @param threshold MAD multiplier for ddqc. 3 by default
 #' @param do.counts whether to consider nCount_RNA for ddqc. TRUE by default
 #' @param do.genes whether to consider nFeature_RNA for ddqc. TRUE by default
 #' @param do.mito whether to consider percent.mt for ddqc. TRUE by default
