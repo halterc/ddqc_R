@@ -77,15 +77,15 @@
 #' This function takes a Seurat object and does initial QC on it
 #'
 #' @param data Seurat object
-#' @param basic.n.genes lower nFeature_RNA filtering. 200 by default
-#' @param basic.percent.mt upper percent.mt filtering. 10 by default
+#' @param basic.n.genes lower nFeature_RNA filtering. 50 by default
+#' @param basic.percent.mt upper percent.mt filtering. 60 by default
 #' @param basic.percent.rb upper percent.rb filtering. 60 by default
 #' @param mt.prefix gene regular expression used to calculate percent.mt in a cell
 #' "MT-" by default
 #' @param rb.prefix gene regular expression used to calculate percent.rb in a cell
 #' @return Filltered Seurat object
 #' @export
-initialQC <- function(data, basic.n.genes=200, basic.percent.mt=10, basic.percent.rb=60, mt.prefix="MT-", rb.prefix="^RP[SL][[:digit:]]|^RPLP[[:digit:]]|^RPSA") {
+initialQC <- function(data, basic.n.genes=50, basic.percent.mt=60, basic.percent.rb=60, mt.prefix="MT-", rb.prefix="^RP[SL][[:digit:]]|^RPLP[[:digit:]]|^RPSA") {
   data[["percent.mt"]] <- PercentageFeatureSet(data, features=grep(mt.prefix, rownames(data$RNA), ignore.case=TRUE))
   data[["percent.rb"]] <- PercentageFeatureSet(data, features=grep(rb.prefix, rownames(data$RNA), ignore.case=TRUE))
 
