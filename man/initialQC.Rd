@@ -8,6 +8,7 @@ initialQC(
   data,
   basic.n.genes = 50,
   basic.percent.mt = 60,
+  basic.percent.rb=60,
   mt.prefix = "MT-",
   rb.prefix = "^RP[SL][[:digit:]]|^RPLP[[:digit:]]|^RPSA"
 )
