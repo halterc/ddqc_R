@@ -103,7 +103,7 @@ initialQC <- function(data, basic.n.genes=50, basic.percent.mt=60, basic.percent
 #' Returns a data.frame that tells which cells have passed ddqc and additional information
 #'
 #' @param data Seurat object
-#' @param n.pcs number of principal componets for clustering. 50 by default
+#' @param n.pcs number of principal componets for clustering. 30 by default
 #' @param k.param k for FindNeighbors. 20 by default
 #' @param res clustering resolution. 1 by default
 #' @param threshold MAD multiplier for ddqc. 3 by default
